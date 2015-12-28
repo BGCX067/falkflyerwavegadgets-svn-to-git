@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Module>
+<ModulePrefs title="8-Ball" height="150">
+  <Require feature="wave-preview" /> 
+  <UserPref name="8ballbuttontext" display_name="8ballbuttontext" default_value="Ask!" datatype="enum" >
+      <EnumValue value="Ask!" />
+      <EnumValue value="Shake!" />
+  </UserPref>
+  </ModulePrefs>
+  <Content type="html">
+ <![CDATA[ 
+  
+  <script type="text/javascript">
+    var prefs = new gadgets.Prefs();
+    
+    var eightballlines = Array("Yes", "No", "Maybe", "Ask later");
+    var line = "";
+    
+    function buttonClicked() {
+      line = eightballlines[Math.floor(Math.random() * (eightballlines.length))];
+      document.getElementById('question').value = line;
+    }
+
+    function renderInfo() {
+      if (!wave.getState()) {
+        return;
+      }
+      document.getElementById('question').value = line;
+      document.getElementById('butCount').value = prefs.getString("8ballbuttontext");
+    }
+
+    function init() {
+      if (wave && wave.isInWaveContainer()) {
+        wave.setStateCallback(renderInfo);
+        wave.setParticipantCallback(renderInfo);
+      }
+    }
+    gadgets.util.registerOnLoadHandler(init);
+  </script>
+  <span id="eightballline">Ask the Magic Eight Ball a question!</span><br/>
+  <input id="question" size="50" value="" /><button id="butCount" onclick="buttonClicked()">Ask!</button><br/>
+
+  ]]> 
+  </Content>
+  </Module>
